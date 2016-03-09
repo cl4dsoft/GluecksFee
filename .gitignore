@@ -59,6 +59,13 @@ nb-configuration.xml
 .gradle
 gradle-app.setting
 build/
+build.gradle
+
+
+## NetBeans Gradle
+.nb-gradle
+.nb-gradle-properties
+
 
 ## OS Specific
 .DS_Store

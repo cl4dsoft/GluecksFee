@@ -22,6 +22,7 @@ public class GameScreen extends Screen {
 	public void create() {
 		camera = new OrthoCamera();
 		entityManager = new EntityManager(camera);
+                Level.camera=camera;
                 lvl = new Level();
                 entityManager.setPlayer();
                 

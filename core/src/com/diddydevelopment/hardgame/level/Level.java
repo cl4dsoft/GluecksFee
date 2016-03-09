@@ -9,8 +9,14 @@ package com.diddydevelopment.hardgame.level;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.MapLayers;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.diddydevelopment.hardgame.HardGame;
+import com.diddydevelopment.hardgame.camera.OrthoCamera;
 import com.diddydevelopment.hardgame.entity.Entity;
 import com.diddydevelopment.hardgame.entity.EntityManager;
 import com.diddydevelopment.hardgame.entity.PathBot;
@@ -39,15 +45,23 @@ public class Level {
     4 = ziel
     5 = item
     */
-    public static int[][] map;
+    public static OrthoCamera camera;
+    static TiledMap map;
+    OrthogonalTiledMapRenderer renderer;
     
     
     ArrayList<Entity> entities;
     
     public Level() {
-        loadDefault();
+        float unitScale = 1;
+        
+        loadFromFile("levels/level1.tmx");
+        renderer = new OrthogonalTiledMapRenderer(map, unitScale);
+        this.playerStart = Level.fromTileToPixel(new Vector2(0,0));
+        //loadDefault();
     }
     
+    /*
     public void loadDefault() {
         sizeX = 50;
         sizeY = 50;
@@ -94,15 +108,15 @@ public class Level {
         
         EntityManager.addEntity(new PathBot(wps));
         
-    }
+    }*/
     
     public void initSizes() {
         int h = HardGame.HEIGHT;
         int w = HardGame.WIDTH;
-        int tileSizeW = w / sizeX;
-        int tileSizeH = h / sizeY;
+        //int tileSizeW = w / sizeX;
+        //int tileSizeH = h / sizeY;
         
-        tileSize = min(tileSizeW,tileSizeH);
+        tileSize = 32; // min(tileSizeW,tileSizeH);
         
         borderX = (w - tileSize * sizeX)/2;
         borderY = (h - tileSize * sizeY)/2;
@@ -110,6 +124,7 @@ public class Level {
     }
     
     public void loadFromFile(String name) {
+        map = new TmxMapLoader().load(name);
         
     }
     
@@ -130,13 +145,16 @@ public class Level {
         if(v.x < 0 || v.y < 0 || v.x >= Level.sizeX || v.y >= Level.sizeY) {
             return false;
         }
-        
-        return (Level.map[(int)v.x][(int)v.y] != 1);
+        TiledMapTileLayer layer = (TiledMapTileLayer)map.getLayers().get(1);
+       // return (Level.map[(int)v.x][(int)v.y] != 1);
+       return (layer.getCell((int)v.x, (int)v.y).getTile().getId()!=1);
     }
     
     public void render(SpriteBatch sb, ShapeRenderer sr) {
+        renderer.setView(camera);
+        renderer.render();
         
-        for(int x=0;x<sizeX;++x) {
+        /*for(int x=0;x<sizeX;++x) {
             for(int y=0;y<sizeY;++y) {
                 sr.setColor(1, 1, 1, 1);
                 if(map[x][y] == 0) sr.setColor(0.4f, 0.4f, 0.4f, 1);
@@ -147,6 +165,6 @@ public class Level {
                 if(map[x][y] == 5) sr.setColor(0, 1, 1, 1);
                 sr.rect(borderX+x*tileSize, borderY+y*tileSize, tileSize, tileSize);
             }
-        }
+        }*/
     }    
 }
