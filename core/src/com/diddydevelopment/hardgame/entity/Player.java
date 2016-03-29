@@ -58,6 +58,7 @@ public class Player extends Entity {
             
         }
         if (Gdx.input.isKeyPressed(Keys.W) || Gdx.input.isKeyPressed(Keys.UP)) {
+            soundManager.playSound("jump");
             top = true;
         }
         if (Gdx.input.isKeyPressed(Keys.S)  || Gdx.input.isKeyPressed(Keys.DOWN)) {

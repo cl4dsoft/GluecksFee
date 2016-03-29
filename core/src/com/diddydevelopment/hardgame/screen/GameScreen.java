@@ -8,6 +8,7 @@ import com.diddydevelopment.hardgame.camera.OrthoCamera;
 import com.diddydevelopment.hardgame.entity.EntityManager;
 import com.diddydevelopment.hardgame.entity.Sprite;
 import com.diddydevelopment.hardgame.level.Level;
+import com.diddydevelopment.hardgame.sound.SoundManager;
 
 public class GameScreen extends Screen {
 
@@ -15,6 +16,8 @@ public class GameScreen extends Screen {
 	private EntityManager entityManager;
 	private ShapeRenderer sr;
         private Level lvl;
+        private SoundManager soundManager;
+        
         
         private Sprite test;
         
@@ -22,7 +25,10 @@ public class GameScreen extends Screen {
 	public void create() {
 		camera = new OrthoCamera();
 		entityManager = new EntityManager(camera);
+                soundManager = new SoundManager();
+                Sprite.soundManager=soundManager;
                 Level.camera=camera;
+                Level.soundManager=soundManager;
                 lvl = new Level();
                 entityManager.setPlayer();
                 

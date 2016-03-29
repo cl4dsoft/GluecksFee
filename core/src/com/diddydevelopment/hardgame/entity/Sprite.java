@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.diddydevelopment.hardgame.level.Level;
+import com.diddydevelopment.hardgame.sound.SoundManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +19,7 @@ import java.util.List;
  * @author chris
  */
 public class Sprite {
+        public static SoundManager soundManager;
     
         public Vector2 pos;
         public Vector2 size;

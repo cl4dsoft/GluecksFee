@@ -20,6 +20,7 @@ import com.diddydevelopment.hardgame.camera.OrthoCamera;
 import com.diddydevelopment.hardgame.entity.Entity;
 import com.diddydevelopment.hardgame.entity.EntityManager;
 import com.diddydevelopment.hardgame.entity.PathBot;
+import com.diddydevelopment.hardgame.sound.SoundManager;
 import static java.lang.Math.min;
 import java.util.ArrayList;
 
@@ -49,6 +50,7 @@ public class Level {
     static TiledMap map;
     OrthogonalTiledMapRenderer renderer;
     
+    public static SoundManager soundManager;
     
     ArrayList<Entity> entities;
     
@@ -58,6 +60,10 @@ public class Level {
         loadFromFile("levels/level1.tmx");
         renderer = new OrthogonalTiledMapRenderer(map, unitScale);
         this.playerStart = Level.fromTileToPixel(new Vector2(0,0));
+        
+        
+        soundManager.playMusic((String) map.getProperties().get("music"));
+        
         //loadDefault();
     }
     
