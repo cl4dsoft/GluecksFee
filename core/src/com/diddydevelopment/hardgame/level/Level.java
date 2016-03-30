@@ -9,17 +9,24 @@ package com.diddydevelopment.hardgame.level;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.maps.MapLayers;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import com.diddydevelopment.hardgame.HardGame;
 import com.diddydevelopment.hardgame.camera.OrthoCamera;
+import com.diddydevelopment.hardgame.entity.Collectable;
 import com.diddydevelopment.hardgame.entity.Entity;
 import com.diddydevelopment.hardgame.entity.EntityManager;
 import com.diddydevelopment.hardgame.entity.PathBot;
+import com.diddydevelopment.hardgame.entity.Sprite;
+import com.diddydevelopment.hardgame.sound.SoundManager;
 import static java.lang.Math.min;
 import java.util.ArrayList;
 
@@ -49,18 +56,71 @@ public class Level {
     static TiledMap map;
     OrthogonalTiledMapRenderer renderer;
     
+    public static SoundManager soundManager;
     
     ArrayList<Entity> entities;
     
     public Level() {
-        float unitScale = 1;
         
         loadFromFile("levels/level1.tmx");
+        initSizes();
+        
+        placeEntities();
+        
+        soundManager.playMusic(map.getProperties().get("music",String.class));
+        
+    
+     }
+          
+    public void loadFromFile(String name) {
+        map = new TmxMapLoader().load(name);
+        float unitScale = 1;
         renderer = new OrthogonalTiledMapRenderer(map, unitScale);
-        this.playerStart = Level.fromTileToPixel(new Vector2(0,0));
-        //loadDefault();
+        
+        sizeX = map.getProperties().get("width", Integer.class);
+        sizeY = map.getProperties().get("height", Integer.class);
     }
     
+    public void initSizes() {
+        int w = HardGame.WIDTH;
+        int h = HardGame.HEIGHT;
+        int tileSizeW = map.getProperties().get("tilewidth", Integer.class);
+        int tileSizeH = map.getProperties().get("tileheight", Integer.class);
+        
+        tileSize = min(tileSizeW,tileSizeH);
+        
+        borderX = (w - tileSize * sizeX)/2;
+        borderY = (h - tileSize * sizeY)/2;
+        
+    }
+    
+    public void placeEntities(){
+         MapLayer objects=map.getLayers().get("objects");
+        MapObjects objs=objects.getObjects();
+        
+        
+        for (MapObject object : objs) {
+            if (object instanceof RectangleMapObject) {
+                RectangleMapObject rectangleObject = (RectangleMapObject) object;
+                
+                Vector2 posOnMap=new Vector2(rectangleObject.getRectangle().getX()+borderX,rectangleObject.getRectangle().getY()+borderY);
+
+                if (rectangleObject.getName().equals("start")) {
+                    this.playerStart = posOnMap;
+                }
+                
+                if (rectangleObject.getName().equals("gem")) {
+                    Entity gem=new Collectable(posOnMap,new Vector2(tileSize,tileSize),new float[]{1,0,1});
+                     EntityManager.addEntity(gem);
+                
+                }
+                
+            }
+        }
+        
+        
+    }
+
     /*
     public void loadDefault() {
         sizeX = 50;
@@ -110,23 +170,7 @@ public class Level {
         
     }*/
     
-    public void initSizes() {
-        int h = HardGame.HEIGHT;
-        int w = HardGame.WIDTH;
-        //int tileSizeW = w / sizeX;
-        //int tileSizeH = h / sizeY;
-        
-        tileSize = 32; // min(tileSizeW,tileSizeH);
-        
-        borderX = (w - tileSize * sizeX)/2;
-        borderY = (h - tileSize * sizeY)/2;
-        
-    }
     
-    public void loadFromFile(String name) {
-        map = new TmxMapLoader().load(name);
-        
-    }
     
     Vector2 getPixelPos(Vector2 vec) {
         return new Vector2(borderX+tileSize*vec.x,borderY+tileSize*vec.y);
@@ -145,14 +189,27 @@ public class Level {
         if(v.x < 0 || v.y < 0 || v.x >= Level.sizeX || v.y >= Level.sizeY) {
             return false;
         }
-        TiledMapTileLayer layer = (TiledMapTileLayer)map.getLayers().get(1);
+        TiledMapTileLayer layer = (TiledMapTileLayer)map.getLayers().get("tile1");
        // return (Level.map[(int)v.x][(int)v.y] != 1);
-       return (layer.getCell((int)v.x, (int)v.y).getTile().getId()!=1);
+       return (layer.getCell((int)v.x, (int)v.y).getTile().getId()==1);
     }
     
     public void render(SpriteBatch sb, ShapeRenderer sr) {
+     
+        float oldX=camera.getPos().x;
+        float oldY=camera.getPos().y;
+        
+        camera.setPosition(oldX-borderX, oldY-borderY);
+        camera.update();
+       
+       
         renderer.setView(camera);
         renderer.render();
+        
+        camera.setPosition(oldX, oldY);
+        camera.update();
+        
+        
         
         /*for(int x=0;x<sizeX;++x) {
             for(int y=0;y<sizeY;++y) {

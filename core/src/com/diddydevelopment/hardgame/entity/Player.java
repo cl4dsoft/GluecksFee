@@ -21,10 +21,12 @@ public class Player extends Entity {
     private int speedInc = 20;
     private int speedDec = 10;
     
+    private int score = 0;
+    
     
 
     public Player(EntityManager em, OrthoCamera camera) {
-        super(new Vector2(0,0), new Vector2(Level.tileSize*3,Level.tileSize*3), new float[]{0.2f, 0.2f, 0.2f});
+        super(new Vector2(0,0), new Vector2(Level.tileSize*1,Level.tileSize*1), new float[]{0.2f, 0.2f, 0.2f});
         this.entityManager = em;
         this.camera = camera;
     }
@@ -58,6 +60,7 @@ public class Player extends Entity {
             
         }
         if (Gdx.input.isKeyPressed(Keys.W) || Gdx.input.isKeyPressed(Keys.UP)) {
+            soundManager.playSound("jump");
             top = true;
         }
         if (Gdx.input.isKeyPressed(Keys.S)  || Gdx.input.isKeyPressed(Keys.DOWN)) {
@@ -169,6 +172,14 @@ public class Player extends Entity {
         }
         
         pos = realnewPos;
+    }
+    
+    public void setScore(int a){
+        score=a;
+    } 
+    
+    public int getScore(){
+        return score;
     }
 
 }
