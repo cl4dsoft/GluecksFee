@@ -21,6 +21,8 @@ public class Player extends Entity {
     private int speedInc = 20;
     private int speedDec = 10;
     
+    private int score = 0;
+    
     
 
     public Player(EntityManager em, OrthoCamera camera) {
@@ -170,6 +172,14 @@ public class Player extends Entity {
         }
         
         pos = realnewPos;
+    }
+    
+    public void setScore(int a){
+        score=a;
+    } 
+    
+    public int getScore(){
+        return score;
     }
 
 }

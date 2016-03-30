@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 import com.diddydevelopment.hardgame.camera.OrthoCamera;
+import com.diddydevelopment.hardgame.entity.Entity;
+import static com.diddydevelopment.hardgame.entity.Entity.entityManager;
 import com.diddydevelopment.hardgame.entity.EntityManager;
 import com.diddydevelopment.hardgame.entity.Sprite;
 import com.diddydevelopment.hardgame.level.Level;
@@ -25,6 +27,7 @@ public class GameScreen extends Screen {
 	public void create() {
 		camera = new OrthoCamera();
 		entityManager = new EntityManager(camera);
+                Entity.entityManager=entityManager;
                 soundManager = new SoundManager();
                 Sprite.soundManager=soundManager;
                 Level.camera=camera;
@@ -48,6 +51,11 @@ public class GameScreen extends Screen {
                 } else {
                     test.color = new float[]{0,1,1};
 
+                }
+                
+                if(entityManager.getPlayer().getScore()>3){
+                    lvl=new Level();
+                    entityManager.resetLevel();
                 }
                 
 	}

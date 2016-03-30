@@ -21,6 +21,10 @@ public class EntityManager {
             this.camera = camera;
 	}
         
+        public void resetLevel(){
+            setPlayer();
+        }
+        
         public void setPlayer() {
             player = new Player(this, camera);
             this.player.setPosition(Level.playerStart);
@@ -46,6 +50,10 @@ public class EntityManager {
 	
 	public static void addEntity(Entity entity) {
 		entities.add(entity);
+	}
+        
+        public static void deleteEntity(Entity entity) {
+		entities.removeValue(entity,false);
 	}
 	
 }

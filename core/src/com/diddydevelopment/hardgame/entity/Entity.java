@@ -11,6 +11,7 @@ public abstract class Entity extends Sprite {
 
 	public Vector2 direction;
         protected int speedMax = 100;
+        public static EntityManager entityManager;
         
 	public Entity(Vector2 pos, Vector2 size, float[] color) {
                 super(pos,size,color);

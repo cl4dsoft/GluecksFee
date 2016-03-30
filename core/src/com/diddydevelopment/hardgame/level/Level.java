@@ -10,6 +10,7 @@ package com.diddydevelopment.hardgame.level;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -17,11 +18,14 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import com.diddydevelopment.hardgame.HardGame;
 import com.diddydevelopment.hardgame.camera.OrthoCamera;
+import com.diddydevelopment.hardgame.entity.Collectable;
 import com.diddydevelopment.hardgame.entity.Entity;
 import com.diddydevelopment.hardgame.entity.EntityManager;
 import com.diddydevelopment.hardgame.entity.PathBot;
+import com.diddydevelopment.hardgame.entity.Sprite;
 import com.diddydevelopment.hardgame.sound.SoundManager;
 import static java.lang.Math.min;
 import java.util.ArrayList;
@@ -61,14 +65,12 @@ public class Level {
         loadFromFile("levels/level1.tmx");
         initSizes();
         
+        placeEntities();
+        
         soundManager.playMusic(map.getProperties().get("music",String.class));
         
     
-        MapLayer objects=map.getLayers().get("objects");
-        MapObjects objs=objects.getObjects();
-        RectangleMapObject start=(RectangleMapObject) objs.get("start");
-        this.playerStart = new Vector2(start.getRectangle().getX()+borderX,start.getRectangle().getY()+borderY);
-    }
+     }
           
     public void loadFromFile(String name) {
         map = new TmxMapLoader().load(name);
@@ -89,6 +91,33 @@ public class Level {
         
         borderX = (w - tileSize * sizeX)/2;
         borderY = (h - tileSize * sizeY)/2;
+        
+    }
+    
+    public void placeEntities(){
+         MapLayer objects=map.getLayers().get("objects");
+        MapObjects objs=objects.getObjects();
+        
+        
+        for (MapObject object : objs) {
+            if (object instanceof RectangleMapObject) {
+                RectangleMapObject rectangleObject = (RectangleMapObject) object;
+                
+                Vector2 posOnMap=new Vector2(rectangleObject.getRectangle().getX()+borderX,rectangleObject.getRectangle().getY()+borderY);
+
+                if (rectangleObject.getName().equals("start")) {
+                    this.playerStart = posOnMap;
+                }
+                
+                if (rectangleObject.getName().equals("gem")) {
+                    Entity gem=new Collectable(posOnMap,new Vector2(tileSize,tileSize),new float[]{1,0,1});
+                     EntityManager.addEntity(gem);
+                
+                }
+                
+            }
+        }
+        
         
     }
 
