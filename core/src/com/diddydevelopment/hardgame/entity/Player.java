@@ -24,7 +24,7 @@ public class Player extends Entity {
     
 
     public Player(EntityManager em, OrthoCamera camera) {
-        super(new Vector2(0,0), new Vector2(Level.tileSize*3,Level.tileSize*3), new float[]{0.2f, 0.2f, 0.2f});
+        super(new Vector2(0,0), new Vector2(Level.tileSize*1,Level.tileSize*1), new float[]{0.2f, 0.2f, 0.2f});
         this.entityManager = em;
         this.camera = camera;
     }

@@ -9,7 +9,9 @@ package com.diddydevelopment.hardgame.level;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.maps.MapLayers;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -55,18 +57,41 @@ public class Level {
     ArrayList<Entity> entities;
     
     public Level() {
-        float unitScale = 1;
         
         loadFromFile("levels/level1.tmx");
+        initSizes();
+        
+        soundManager.playMusic(map.getProperties().get("music",String.class));
+        
+    
+        MapLayer objects=map.getLayers().get("objects");
+        MapObjects objs=objects.getObjects();
+        RectangleMapObject start=(RectangleMapObject) objs.get("start");
+        this.playerStart = new Vector2(start.getRectangle().getX()+borderX,start.getRectangle().getY()+borderY);
+    }
+          
+    public void loadFromFile(String name) {
+        map = new TmxMapLoader().load(name);
+        float unitScale = 1;
         renderer = new OrthogonalTiledMapRenderer(map, unitScale);
-        this.playerStart = Level.fromTileToPixel(new Vector2(0,0));
         
-        
-        soundManager.playMusic((String) map.getProperties().get("music"));
-        
-        //loadDefault();
+        sizeX = map.getProperties().get("width", Integer.class);
+        sizeY = map.getProperties().get("height", Integer.class);
     }
     
+    public void initSizes() {
+        int w = HardGame.WIDTH;
+        int h = HardGame.HEIGHT;
+        int tileSizeW = map.getProperties().get("tilewidth", Integer.class);
+        int tileSizeH = map.getProperties().get("tileheight", Integer.class);
+        
+        tileSize = min(tileSizeW,tileSizeH);
+        
+        borderX = (w - tileSize * sizeX)/2;
+        borderY = (h - tileSize * sizeY)/2;
+        
+    }
+
     /*
     public void loadDefault() {
         sizeX = 50;
@@ -116,23 +141,7 @@ public class Level {
         
     }*/
     
-    public void initSizes() {
-        int h = HardGame.HEIGHT;
-        int w = HardGame.WIDTH;
-        //int tileSizeW = w / sizeX;
-        //int tileSizeH = h / sizeY;
-        
-        tileSize = 32; // min(tileSizeW,tileSizeH);
-        
-        borderX = (w - tileSize * sizeX)/2;
-        borderY = (h - tileSize * sizeY)/2;
-        
-    }
     
-    public void loadFromFile(String name) {
-        map = new TmxMapLoader().load(name);
-        
-    }
     
     Vector2 getPixelPos(Vector2 vec) {
         return new Vector2(borderX+tileSize*vec.x,borderY+tileSize*vec.y);
@@ -151,14 +160,27 @@ public class Level {
         if(v.x < 0 || v.y < 0 || v.x >= Level.sizeX || v.y >= Level.sizeY) {
             return false;
         }
-        TiledMapTileLayer layer = (TiledMapTileLayer)map.getLayers().get(1);
+        TiledMapTileLayer layer = (TiledMapTileLayer)map.getLayers().get("tile1");
        // return (Level.map[(int)v.x][(int)v.y] != 1);
-       return (layer.getCell((int)v.x, (int)v.y).getTile().getId()!=1);
+       return (layer.getCell((int)v.x, (int)v.y).getTile().getId()==1);
     }
     
     public void render(SpriteBatch sb, ShapeRenderer sr) {
+     
+        float oldX=camera.getPos().x;
+        float oldY=camera.getPos().y;
+        
+        camera.setPosition(oldX-borderX, oldY-borderY);
+        camera.update();
+       
+       
         renderer.setView(camera);
         renderer.render();
+        
+        camera.setPosition(oldX, oldY);
+        camera.update();
+        
+        
         
         /*for(int x=0;x<sizeX;++x) {
             for(int y=0;y<sizeY;++y) {

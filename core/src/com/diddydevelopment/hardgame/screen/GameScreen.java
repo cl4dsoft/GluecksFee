@@ -34,7 +34,7 @@ public class GameScreen extends Screen {
                 
                 sr = new ShapeRenderer();
                 
-                test = new Sprite(new Vector2(50,50), new Vector2(50,50), new float[]{1,1,0});
+                test = new Sprite(new Vector2(250,250), new Vector2(50,50), new float[]{1,1,0});
                 
 	}
 

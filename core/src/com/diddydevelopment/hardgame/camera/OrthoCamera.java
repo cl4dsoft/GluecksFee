@@ -12,7 +12,7 @@ public class OrthoCamera extends OrthographicCamera {
 	Vector3 tmp = new Vector3();
 	Vector2 origin = new Vector2();
 	VirtualViewport virtualViewport;
-	Vector2 pos = new Vector2();
+	//Vector2 pos = new Vector2();
 
 	public OrthoCamera() {
 		this(new VirtualViewport(HardGame.WIDTH, HardGame.HEIGHT));
@@ -33,11 +33,11 @@ public class OrthoCamera extends OrthographicCamera {
 	
 	public void setPosition(float x, float y) {
 		position.set(x - viewportWidth * origin.x, y - viewportHeight * origin.y, 0f);
-		pos.set(x, y);
+		//pos.set(x, y);
 	}
 	
 	public Vector2 getPos() {
-		return pos;
+		return new Vector2(position.x,position.y);
 	}
 
 	@Override
