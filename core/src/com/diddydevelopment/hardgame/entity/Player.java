@@ -2,6 +2,11 @@ package com.diddydevelopment.hardgame.entity;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.diddydevelopment.hardgame.HardGame;
 import com.diddydevelopment.hardgame.TextureManager;
@@ -24,12 +29,33 @@ public class Player extends Entity {
     private int score = 0;
     
     
+    // graphics
+    Animation animation;
+    Texture texture;
+    TextureRegion[] frames;
+    TextureRegion currentFrame;
+    float time;
+    
+    
 
-    public Player(EntityManager em, OrthoCamera camera) {
-        super(new Vector2(0,0), new Vector2(Level.tileSize*1,Level.tileSize*1), new float[]{0.2f, 0.2f, 0.2f});
+    public Player(EntityManager em, OrthoCamera camera) 
+    {
+        super(new Vector2(0,0), new Vector2(Level.tileSize*1.5f , Level.tileSize*1.5f), new float[]{0.2f, 0.2f, 0.2f});
         this.entityManager = em;
         this.camera = camera;
+        
+        texture = new Texture( Gdx.files.internal( "fee2.png" ) );
+        TextureRegion[][] tmp = TextureRegion.split( texture , texture.getWidth()/8 , texture.getHeight() );
+        frames = new TextureRegion[8];
+        for ( int i = 0 ; i < 8 ; ++i )
+        {
+            frames[i] = tmp[0][i];
+        }
+        animation = new Animation( 0.02f , frames );
+        time = 0.0f;
     }
+    
+    
 
     @Override
     public void update() {
@@ -173,6 +199,20 @@ public class Player extends Entity {
         
         pos = realnewPos;
     }
+    
+    
+    
+    @Override
+    public void render( SpriteBatch sb , ShapeRenderer sr )
+    {
+        time += Gdx.graphics.getDeltaTime();
+        currentFrame = animation.getKeyFrame( time , true );
+        sb.begin();
+        sb.draw( currentFrame , this.pos.x ,this.pos.y , this.size.x , this.size.y );
+        sb.end();
+    }
+    
+    
     
     public void setScore(int a){
         score=a;
