@@ -33,7 +33,7 @@ public class GameScreen extends Screen {
                 Sprite.soundManager=soundManager;
                 Level.camera=camera;
                 Level.soundManager=soundManager;
-                lvl = new Level(1);
+                lvl = new Level();
                 entityManager.setPlayer();
                 
                 sr = new ShapeRenderer();
@@ -59,7 +59,10 @@ public class GameScreen extends Screen {
                 if(EntityManager.getEntitiesByType(Collectable.class).size==0){
                     level++;
                     entityManager.deleteAllEntities();
-                    lvl=new Level(level);
+                    if(!lvl.loadLevel(level)){
+                        level=1;
+                        lvl.loadLevel(level);
+                    }
                     entityManager.resetLevel();
                 }
                 
