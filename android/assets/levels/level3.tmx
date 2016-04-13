@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="15" height="15" tilewidth="32" tileheight="32" nextobjectid="20">
+ <properties>
+  <property name="music" value="m171"/>
+ </properties>
+ <tileset firstgid="1" name="tiletextures" tilewidth="32" tileheight="32" tilecount="4" columns="4">
+  <image source="../tiletextures.png" width="128" height="32"/>
+ </tileset>
+ <layer name="tile1" width="15" height="15">
+  <data encoding="csv">
+4,3,3,3,3,3,3,3,3,3,3,3,3,3,4,
+3,1,1,1,1,1,1,1,1,1,1,1,1,1,3,
+3,1,1,1,1,1,1,1,1,1,1,1,1,1,3,
+3,4,4,4,4,4,4,4,4,4,4,4,1,1,3,
+3,1,1,1,1,1,1,1,1,1,1,1,1,1,3,
+3,1,1,1,1,1,1,1,1,1,1,1,1,1,3,
+3,1,4,4,4,4,4,4,4,4,4,4,4,4,3,
+3,1,1,1,1,1,1,1,1,1,1,1,1,1,3,
+3,1,1,1,1,1,1,1,1,1,1,1,1,1,3,
+3,4,4,4,4,4,4,4,4,4,4,1,1,1,3,
+3,1,1,1,1,1,1,1,1,1,1,1,1,1,3,
+3,1,1,1,1,1,1,1,1,1,1,1,1,1,3,
+3,1,4,4,4,4,4,4,4,4,4,4,4,4,3,
+3,1,1,1,1,1,1,1,1,1,1,1,1,1,3,
+4,3,3,3,3,3,3,3,3,3,3,3,3,3,4
+</data>
+ </layer>
+ <objectgroup name="objects">
+  <object id="3" name="start" x="64" y="64" width="32" height="32"/>
+  <object id="11" name="finish" x="416" y="416" width="32" height="32"/>
+  <object id="12" name="gem" type="gem" x="160" y="160" width="32" height="32"/>
+  <object id="13" name="gem" type="gem" x="96" y="256" width="32" height="32"/>
+  <object id="14" name="gem" type="gem" x="224" y="256" width="32" height="32"/>
+  <object id="15" name="gem" type="gem" x="64" y="160" width="32" height="32"/>
+  <object id="16" name="gem" type="gem" x="224" y="352" width="32" height="32"/>
+  <object id="17" name="gem" type="gem" x="256" y="160" width="32" height="32"/>
+  <object id="18" name="gem" type="gem" x="128" y="352" width="32" height="32"/>
+  <object id="19" name="gem" type="gem" x="320" y="352" width="32" height="32"/>
+ </objectgroup>
+</map>

@@ -7,6 +7,7 @@ package com.diddydevelopment.hardgame.level;
 
 
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapLayer;
@@ -60,9 +61,12 @@ public class Level {
     
     ArrayList<Entity> entities;
     
-    public Level() {
+    public Level(int level) {
         
-        loadFromFile("levels/level1.tmx");
+        if(loadFromFile("levels/level"+level+".tmx")==false){
+            level=1;
+            loadFromFile("levels/level"+level+".tmx");
+        }
         initSizes();
         
         placeEntities();
@@ -72,13 +76,21 @@ public class Level {
     
      }
           
-    public void loadFromFile(String name) {
+    public boolean loadFromFile(String name) {
+         if(!Gdx.files.internal(name).exists()){
+            return false;
+        }
+        
         map = new TmxMapLoader().load(name);
+        
+       
         float unitScale = 1;
         renderer = new OrthogonalTiledMapRenderer(map, unitScale);
         
         sizeX = map.getProperties().get("width", Integer.class);
         sizeY = map.getProperties().get("height", Integer.class);
+        
+        return true;
     }
     
     public void initSizes() {
@@ -107,9 +119,7 @@ public class Level {
 
                 if (rectangleObject.getName().equals("start")) {
                     this.playerStart = posOnMap;
-                }
-                
-                if (rectangleObject.getName().equals("gem")) {
+                }else if (rectangleObject.getName().equals("gem")) {
                     Entity gem=new Collectable(posOnMap,new Vector2(tileSize,tileSize),new float[]{1,0,1});
                      EntityManager.addEntity(gem);
                 

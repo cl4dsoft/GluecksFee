@@ -55,5 +55,19 @@ public class EntityManager {
         public static void deleteEntity(Entity entity) {
 		entities.removeValue(entity,false);
 	}
+        
+        public static void deleteAllEntities(){
+            entities.clear();
+        }
+        
+        public static Array<Entity> getEntitiesByType(Class c){
+            Array<Entity> included = new Array<Entity>();
+            for (Entity entity : entities) {
+                if(entity.getClass().equals(c)){
+                    included.add(entity);
+                }
+            }
+            return included;
+        }
 	
 }
