@@ -61,22 +61,14 @@ public class Level {
     
     ArrayList<Entity> entities;
     
-    public Level(int level) {
-        
-        if(loadFromFile("levels/level"+level+".tmx")==false){
-            level=1;
-            loadFromFile("levels/level"+level+".tmx");
-        }
-        initSizes();
-        
-        placeEntities();
-        
-        soundManager.playMusic(map.getProperties().get("music",String.class));
-        
+    public Level() {
+        loadLevel(1);
     
      }
           
-    public boolean loadFromFile(String name) {
+    public boolean loadLevel(int level) {
+        String name="levels/level"+level+".tmx";
+        
          if(!Gdx.files.internal(name).exists()){
             return false;
         }
@@ -89,6 +81,11 @@ public class Level {
         
         sizeX = map.getProperties().get("width", Integer.class);
         sizeY = map.getProperties().get("height", Integer.class);
+        
+        
+        initSizes();
+        placeEntities();
+        soundManager.playMusic(map.getProperties().get("music",String.class));
         
         return true;
     }
