@@ -58,6 +58,8 @@ public class MenuScreen implements Screen {
         pe = new ParticleEffect();
         pe.load(Gdx.files.internal("particleEffects/starFlash"), Gdx.files.internal(""));
         pe.getEmitters().first().setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+        pe.getEmitters().first().getSpawnWidth().setHigh(Gdx.graphics.getWidth());
+        pe.getEmitters().first().getSpawnHeight().setHigh(Gdx.graphics.getHeight());
         pe.start();
 
         stage = new Stage();
@@ -68,10 +70,9 @@ public class MenuScreen implements Screen {
         font = new BitmapFont();
         font.setColor(Color.WHITE);
         
-         titleText = new Texture("buttons/title.png");
-         
+         titleText = new Texture("buttonTextures/title.png");
 
-        Texture menuPlay = new Texture("buttons/menuPlay.png");
+        Texture menuPlay = new Texture("buttonTextures/menuPlay.png");
 
         skin.add("white", menuPlay);
 
