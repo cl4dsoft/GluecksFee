@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="32" tileheight="32" nextobjectid="1">
+	 <properties>
+  <property name="music" value="m171"/>
+ </properties>
+ <tileset firstgid="1" name="fee_tiles" tilewidth="32" tileheight="32" tilecount="64" columns="8">
+  <image source="../fee_tiles.png" width="256" height="256"/>
+ </tileset>
+ <layer name="tile1" width="16" height="16">
+  <data encoding="csv">
+5,6,6,7,6,6,6,7,7,6,8,14,14,5,7,8,
+13,1,1,1,1,1,1,1,1,1,24,8,14,13,1,16,
+13,1,1,1,1,1,1,1,1,1,1,24,7,21,1,16,
+21,1,1,1,1,1,1,1,1,1,1,1,1,1,1,16,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,24,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+10,1,1,1,1,1,1,1,1,1,1,1,1,1,1,10,
+18,19,2,2,2,2,2,2,2,2,2,2,2,2,17,18
+</data>
+ </layer>
+  <objectgroup name="objects">
+  <object id="3" name="start" x="64" y="64" width="32" height="32"/>
+  <object id="11" name="finish" x="416" y="416" width="32" height="32"/>
+  <object id="12" name="gem" type="gem" x="160" y="160" width="32" height="32"/>
+  <object id="13" name="gem" type="gem" x="96" y="256" width="32" height="32"/>
+  <object id="14" name="gem" type="gem" x="224" y="256" width="32" height="32"/>
+  <object id="15" name="gem" type="gem" x="64" y="160" width="32" height="32"/>
+  <object id="16" name="gem" type="gem" x="224" y="352" width="32" height="32"/>
+  <object id="17" name="gem" type="gem" x="256" y="160" width="32" height="32"/>
+  <object id="18" name="gem" type="gem" x="128" y="352" width="32" height="32"/>
+  <object id="19" name="gem" type="gem" x="320" y="352" width="32" height="32"/>
+ </objectgroup>
+</map>

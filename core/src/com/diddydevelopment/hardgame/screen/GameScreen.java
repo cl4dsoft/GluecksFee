@@ -1,5 +1,7 @@
 package com.diddydevelopment.hardgame.screen;
 
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -7,13 +9,15 @@ import com.badlogic.gdx.math.Vector2;
 import com.diddydevelopment.hardgame.camera.OrthoCamera;
 import com.diddydevelopment.hardgame.entity.Collectable;
 import com.diddydevelopment.hardgame.entity.Entity;
-import static com.diddydevelopment.hardgame.entity.Entity.entityManager;
 import com.diddydevelopment.hardgame.entity.EntityManager;
 import com.diddydevelopment.hardgame.entity.Sprite;
 import com.diddydevelopment.hardgame.level.Level;
 import com.diddydevelopment.hardgame.sound.SoundManager;
 
-public class GameScreen extends Screen {
+public class GameScreen implements Screen {
+        private Game game;
+    
+        private SpriteBatch sb;
 
 	private OrthoCamera camera;
 	private EntityManager entityManager;
@@ -24,8 +28,10 @@ public class GameScreen extends Screen {
         
         private Sprite test;
         
-	@Override
-	public void create() {
+        public GameScreen(Game g){  
+            game=g;
+        
+            sb = new SpriteBatch();
 		camera = new OrthoCamera();
 		entityManager = new EntityManager(camera);
                 Entity.entityManager=entityManager;
@@ -39,13 +45,17 @@ public class GameScreen extends Screen {
                 sr = new ShapeRenderer();
                 
                 test = new Sprite(new Vector2(250,250), new Vector2(50,50), new float[]{1,1,0});
+        }
+        
+	@Override
+	public void show() {
                 
 	}
 
        static int level=1;
                 
-	@Override
-	public void update() {
+	
+	private void update() {
 		camera.update();
 		entityManager.update();
                 
@@ -69,7 +79,8 @@ public class GameScreen extends Screen {
 	}
 
 	@Override
-	public void render(SpriteBatch sb) {
+	public void render(float delta) {
+                update();
 		sb.setProjectionMatrix(camera.combined);
                 sr.setProjectionMatrix(camera.combined);
                 sr.setColor(1, 1, 1, 1);
@@ -89,6 +100,7 @@ public class GameScreen extends Screen {
 
 	@Override
 	public void dispose() {
+        soundManager.dispose();
 	}
 
 	@Override
@@ -100,5 +112,9 @@ public class GameScreen extends Screen {
 	public void resume() {
 		
 	}
+
+    @Override
+    public void hide() {
+    }
 
 }

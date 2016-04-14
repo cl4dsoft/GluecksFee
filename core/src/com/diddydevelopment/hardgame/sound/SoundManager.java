@@ -55,5 +55,15 @@ public class SoundManager {
         
     }
     
+    public void dispose(){
+        song.stop();
+        song.dispose();
+        for(Sound s: sounds.values()){
+            s.stop();
+            s.dispose();
+                    
+        }
+    }
+    
     
 }

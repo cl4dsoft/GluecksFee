@@ -208,7 +208,7 @@ public class Player extends Entity {
         time += Gdx.graphics.getDeltaTime();
         currentFrame = animation.getKeyFrame( time , true );
         sb.begin();
-        sb.draw( currentFrame , this.pos.x ,this.pos.y , this.size.x , this.size.y );
+        sb.draw( currentFrame , this.pos.x-8 ,this.pos.y-8 , this.size.x+16 , this.size.y+16 );
         sb.end();
     }
     
