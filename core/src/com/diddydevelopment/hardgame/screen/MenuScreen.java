@@ -5,22 +5,24 @@
  */
 package com.diddydevelopment.hardgame.screen;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.diddydevelopment.hardgame.camera.OrthoCamera;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.diddydevelopment.hardgame.HardGame;
 import com.diddydevelopment.hardgame.sound.SoundManager;
 
 /**
@@ -29,9 +31,8 @@ import com.diddydevelopment.hardgame.sound.SoundManager;
  */
 public class MenuScreen implements Screen {
 
-    private Game game;
+    private HardGame game;
 
-    private OrthoCamera camera;
     private ShapeRenderer sr;
     private SoundManager soundManager;
 
@@ -43,9 +44,8 @@ public class MenuScreen implements Screen {
     BitmapFont font;
     Texture titleText;
 
-    public MenuScreen(Game g) {
+    public MenuScreen(HardGame g) {
         game = g;
-        camera = new OrthoCamera();
         soundManager = new SoundManager();
         
         
@@ -57,12 +57,12 @@ public class MenuScreen implements Screen {
 
         pe = new ParticleEffect();
         pe.load(Gdx.files.internal("particleEffects/starFlash"), Gdx.files.internal(""));
-        pe.getEmitters().first().setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
-        pe.getEmitters().first().getSpawnWidth().setHigh(Gdx.graphics.getWidth());
-        pe.getEmitters().first().getSpawnHeight().setHigh(Gdx.graphics.getHeight());
+        pe.getEmitters().first().setPosition(game.getWidth() / 2, game.getHeight()/ 2);
+        pe.getEmitters().first().getSpawnWidth().setHigh(game.getWidth());
+        pe.getEmitters().first().getSpawnHeight().setHigh( game.getHeight());
         pe.start();
 
-        stage = new Stage();
+        stage = new Stage(game.getViewport());
         Gdx.input.setInputProcessor(stage);
 
         skin = new Skin();
@@ -72,9 +72,10 @@ public class MenuScreen implements Screen {
         
          titleText = new Texture("buttonTextures/title.png");
 
-        Texture menuPlay = new Texture("buttonTextures/menuPlay.png");
+       Texture menuPlay = new Texture("buttonTextures/menuPlay.png");
 
-        skin.add("white", menuPlay);
+        
+        skin.add("white",menuPlay);
 
         // Store the default libgdx font under the name "default".
         BitmapFont bfont = new BitmapFont();
@@ -90,14 +91,14 @@ public class MenuScreen implements Screen {
         skin.add("default", textButtonStyle);
 
         final TextButton textButton = new TextButton("PLAY", skin);
-        textButton.setSize(Gdx.graphics.getWidth() * 0.8f, menuPlay.getHeight());
-        textButton.setPosition(Gdx.graphics.getWidth() * 0.1f, Gdx.graphics.getHeight() *0.25f);
+        textButton.setSize(game.getWidth() * 0.8f, menuPlay.getHeight());
+        textButton.setPosition(game.getWidth() * 0.1f, game.getHeight() *0.25f);
         stage.addActor(textButton);
 
-        textButton.addListener(new ChangeListener() {
+        textButton.addListener(new ClickListener() {
             private boolean changed=false;
-            @Override
-            public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+            
+            public void clicked(InputEvent event, float x, float y) {
                 if(!changed){
                     game.setScreen(new GameScreen(game));
                     changed=true;
@@ -113,40 +114,36 @@ public class MenuScreen implements Screen {
     }
 
     private void update() {
-        camera.update();
     }
 
     @Override
     public void render(float delta) {
         update();
-
-        //sb.setProjectionMatrix(camera.combined);
-        sr.setProjectionMatrix(camera.combined);
-        sr.setColor(1, 1, 1, 1);
-
-        sr.begin(ShapeRenderer.ShapeType.Filled);
-        pe.update(Gdx.graphics.getDeltaTime());
-        batch.begin();
-        pe.draw(batch);
         
-        batch.draw(titleText, Gdx.graphics.getWidth() /2 - titleText.getWidth()/2 , Gdx.graphics.getHeight() / 4*3);
-
-        font.draw(batch, "Created by\n  Christian, Jonas & Christian", Gdx.graphics.getWidth() / 5, Gdx.graphics.getHeight() / 8);
-
-        batch.end();
+        pe.update(Gdx.graphics.getDeltaTime());
+          
         if (pe.isComplete()) {
             pe.reset();
         }
+        
+        batch.setProjectionMatrix(game.getCamera().combined);
+        batch.begin();
+        pe.draw(batch);
+        
+        font.draw(batch, "Created by\n  Christian, Jonas & Christian", game.getWidth() / 5, game.getHeight() / 8);
+
+         batch.draw(titleText,game.getWidth()/4, game.getHeight()/3*2,game.getWidth()/2,titleText.getHeight());
+        batch.end();
+        
+      
 
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
 
-        sr.end();
     }
 
     @Override
     public void resize(int width, int height) {
-        camera.resize();
     }
 
     @Override

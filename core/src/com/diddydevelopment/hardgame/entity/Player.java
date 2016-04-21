@@ -2,15 +2,15 @@ package com.diddydevelopment.hardgame.entity;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.diddydevelopment.hardgame.HardGame;
-import com.diddydevelopment.hardgame.TextureManager;
-import com.diddydevelopment.hardgame.camera.OrthoCamera;
 import com.diddydevelopment.hardgame.level.Level;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class Player extends Entity {
 
     private final EntityManager entityManager;
-    private final OrthoCamera camera;
+    private final OrthographicCamera camera;
     private long lastFire;
     
     private int speedInc = 20;
@@ -38,7 +38,7 @@ public class Player extends Entity {
     
     
 
-    public Player(EntityManager em, OrthoCamera camera) 
+    public Player(EntityManager em, OrthographicCamera camera) 
     {
         super(new Vector2(0,0), new Vector2(Level.tileSize*1.0f , Level.tileSize*1.0f), new float[]{0.2f, 0.2f, 0.2f});
         this.entityManager = em;
@@ -70,7 +70,8 @@ public class Player extends Entity {
         boolean back = false;
         
         if (Gdx.input.isTouched()) {
-            Vector2 touch = camera.unprojectCoordinates(Gdx.input.getX(), Gdx.input.getY());
+            Vector3 touch = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(),0.0f));
+            
             if (touch.y < HardGame.HEIGHT / 5) { //top
                 bottom = true;
             }
@@ -139,7 +140,7 @@ public class Player extends Entity {
         Vector2 newPosX = new Vector2(this.pos.x+posAdd.x,this.pos.y);
         Vector2 newPosY = new Vector2(this.pos.x,this.pos.y+posAdd.y);
         
-        Gdx.app.log("col",pos.toString());
+       // Gdx.app.log("col",pos.toString());
         
 //        for(Vector2 asdf : colTiles) {
 //            Gdx.app.log("collisionDetection", asdf.toString());
