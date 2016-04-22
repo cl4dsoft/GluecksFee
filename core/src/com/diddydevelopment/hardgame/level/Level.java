@@ -50,7 +50,7 @@ public class Level {
     ArrayList<Entity> entities;
     
     public Level() {
-        loadLevel(4);
+        loadLevel(5);
      }
           
     public boolean loadLevel(int level) {

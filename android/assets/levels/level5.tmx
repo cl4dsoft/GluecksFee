@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="32" tileheight="32" nextobjectid="1">
+ <properties>
+  <property name="music" value="m171"/>
+ </properties>
+ <tileset firstgid="1" name="fairyland" tilewidth="32" tileheight="32" tilecount="64" columns="8">
+  <image source="../fairyland.png" width="256" height="256"/>
+ </tileset>
+ <imagelayer name="bg">
+  <image source="../clouds.png" width="512" height="512"/>
+ </imagelayer>
+ <layer name="tile1" width="16" height="16">
+  <data encoding="csv">
+1,1,49,50,1,1,1,1,1,1,1,1,1,1,1,1,
+2,4,5,5,6,7,1,1,1,1,1,1,49,1,1,1,
+10,12,13,13,14,15,1,1,1,1,2,4,5,6,7,1,
+1,1,53,53,1,1,1,1,1,1,10,11,11,11,15,1,
+1,1,1,1,1,1,1,1,1,1,1,1,53,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,50,49,1,1,1,1,1,
+1,1,1,1,1,1,2,4,5,5,5,6,7,1,1,1,
+1,1,1,1,1,1,10,11,12,13,13,14,15,1,1,1,
+1,1,1,1,1,1,1,1,1,1,53,1,1,1,1,1,
+1,1,1,50,1,1,1,1,1,1,1,1,1,1,1,1,
+1,2,4,5,6,3,7,1,1,1,1,1,1,1,1,1,
+1,10,11,11,11,11,15,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+50,49,49,49,49,49,51,49,1,1,50,49,1,50,52,49,
+5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5
+</data>
+ </layer>
+  <objectgroup name="objects">
+  <object id="3" name="start" x="64" y="128" width="32" height="32"/>
+  <object id="11" name="finish" x="416" y="416" width="32" height="32"/>
+  <object id="12" name="gem" type="gem" x="160" y="160" width="32" height="32"/>
+  <object id="13" name="gem" type="gem" x="96" y="256" width="32" height="32"/>
+  <object id="14" name="gem" type="gem" x="416" y="256" width="32" height="32"/>
+  <object id="15" name="gem" type="gem" x="64" y="160" width="32" height="32"/>
+  <object id="16" name="gem" type="gem" x="224" y="352" width="32" height="32"/>
+  <object id="17" name="gem" type="gem" x="256" y="160" width="32" height="32"/>
+  <object id="18" name="gem" type="gem" x="128" y="416" width="32" height="32"/>
+  <object id="19" name="gem" type="gem" x="320" y="352" width="32" height="32"/>
+  <object id="19" name="gem" type="gem" x="448" y="32" width="32" height="32"/>
+ </objectgroup>
+</map>
