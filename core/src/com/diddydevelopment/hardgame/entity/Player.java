@@ -23,7 +23,21 @@ public class Player extends Entity {
     private final OrthographicCamera camera;
     private long lastFire;
     
-    private int speedInc = 20;
+    private final int playerSpeedMax = 1000;
+    
+    //wie schnell darf man tatschen in ms
+    private int touchDelay = 300;
+    private long lastTouched = 0;
+    
+    //wird jedes mal abgezogen
+    private int gravity = 20;
+    
+    //speedboost beim jump in y richtung
+    private int speedIncJump = 600;
+    
+    //speedinc in links rechts richtung
+    private int speedInc = 400;
+    //speeddec in links rechts richtung
     private int speedDec = 10;
     
     private int score = 0;
@@ -53,6 +67,8 @@ public class Player extends Entity {
         }
         animation = new Animation( 0.02f , frames );
         time = 0.0f;
+        
+        this.speedMax = playerSpeedMax;
     }
     
     
@@ -69,8 +85,18 @@ public class Player extends Entity {
         boolean accept = false;
         boolean back = false;
         
+        boolean wasTouched = false;
+        double touchedX=0;
+        
         if (Gdx.input.isTouched()) {
             Vector3 touch = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(),0.0f));
+            
+            long curTime = System.currentTimeMillis();
+            if(this.lastTouched+this.touchDelay<curTime) {
+                wasTouched = true;
+                touchedX = ((touch.x / HardGame.WIDTH)-0.5)*2;
+                this.lastTouched = curTime;
+            }
             
             if (touch.y < HardGame.HEIGHT / 5) { //top
                 bottom = true;
@@ -87,7 +113,6 @@ public class Player extends Entity {
             
         }
         if (Gdx.input.isKeyPressed(Keys.W) || Gdx.input.isKeyPressed(Keys.UP)) {
-            soundManager.playSound("jump");
             top = true;
         }
         if (Gdx.input.isKeyPressed(Keys.S)  || Gdx.input.isKeyPressed(Keys.DOWN)) {
@@ -112,13 +137,19 @@ public class Player extends Entity {
             bottom = false;
         }
         
+        direction.y -= gravity;
 
+        if(wasTouched) {
+            soundManager.playSound("jump");
+            direction.y = direction.y+speedIncJump;
+            direction.x = (float) (direction.x+touchedX*speedInc);
+        }
         
-        if(top) direction.y = direction.y+speedInc;
-        if(bottom) direction.y = direction.y-speedInc;
-        if(left) direction.x = direction.x-speedInc;
-        if(right) direction.x = direction.x+speedInc;
-        
+//        if(top) direction.y = direction.y+speedInc;
+//        if(bottom) direction.y = direction.y-speedInc;
+//        if(left) direction.x = direction.x-speedInc;
+//        if(right) direction.x = direction.x+speedInc;
+//        
         if(direction.x > 0) direction.x = max(0,direction.x - speedDec);
         if(direction.x < 0) direction.x = min(0,direction.x + speedDec);
         if(direction.y > 0) direction.y = max(0,direction.y - speedDec);

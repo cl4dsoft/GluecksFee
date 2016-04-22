@@ -49,7 +49,7 @@ public class MenuScreen implements Screen {
         soundManager = new SoundManager();
         
         
-        soundManager.playMusic("menu");
+        soundManager.playMusic("gluecksfeemaintheme");
 
         sr = new ShapeRenderer();
 
